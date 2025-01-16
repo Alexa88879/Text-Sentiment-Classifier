@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Tool</title>
+    <style>
+        /* Basic styling for body and container */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            background-image: url("{{ url_for('static', filename='emotional eggs.jpg') }}"); /* Add your image path here */
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.9; /* Reduce opacity of the image */
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        nav ul li .dropdown {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: white;
+            color: black;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        nav ul li .dropdown a {
+            color: black;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        nav ul li .dropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+        nav ul li:hover .dropdown {
+            display: block;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            color: #000000;
+            width: 90%;
+            max-width: 500px;
+            margin: 100px auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .emoji {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .container {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+         html {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+    }
+
+        footer {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">SAT</div>
+        <nav>
+            <ul>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Profile</a></li>
+                <li>
+                    <a href="#">More</a>
+                    <div class="dropdown">
+                        <a href="./">Register</a>
+                        <a href="./">Login</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Sentiment Analyser</h1>
+    <form action="/sentiment_result" method="post">
+        <input type="text" id="userInput" placeholder="Write down your thoughts" name="comment">
+        <button id="submitButton">Submit</button>
+    </form>
+        <div class="result" id="resultContainer"></div>
+    </div>
+
+    <footer>
+        <div style="padding:5px;">
+            <a href="#">About Us</a>
+            <a href="#">Suggestions</a>
+            <div style="padding:5px;">
+                <a href="#">Email:test@gmail.com </a>
+                <a href="#">Phone:128387748</a>
+                <a href="#">Address:RKGIT</a>
+            </div>
+        </div>
+           
+
+        <div class="social-icons">
+            <a href=""><img src="{{ url_for('static', filename='X_icon.png') }}" alt="X" style="height:15px; width:15px"></a>
+            <a href=""><img src="{{ url_for('static', filename='instagram_icon.png') }}" alt="Instagram" style="height:15px; width:15px"></a>
+            <a href=""><img src="{{ url_for('static', filename='facebook_icon.png') }}" alt="Facebook" style="height:15px; width:15px"></a>
+            <a href=""><img src="{{ url_for('static', filename='linkedin_icon.png') }}" alt="LinkedIn" style="height:15px; width:15px"></a>
+            <a href=""><img src="{{ url_for('static', filename='youtube_icon.png') }}" alt="YouTube" style="height:15px; width:15px"></a>
+        </div>
+    </footer>
+<!-- 
+    <script>
+        document.getElementById('submitButton').addEventListener('click', evaluateInput);
+
+        function evaluateInput() {
+            const input = document.getElementById('userInput').value.trim();
+            const resultContainer = document.getElementById('resultContainer');
+
+            // Clear previous results
+            resultContainer.innerHTML = '';
+
+            // Use switch-case for better performance
+            switch (input) {
+                case '1':
+                    renderResult('😊', 'Positive');
+                    break;
+                case '0':
+                    renderResult('😢', 'Negative');
+                    break;
+                default:
+                    renderResult('', 'Please enter a valid number (1 or 0).');
+            }
+        }
+
+        function renderResult(emoji, message) {
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = emoji
+                ? `<div class='emoji'>${emoji}</div><div>${message}</div>`
+                : `<div>${message}</div>`;
+        }
+    </script> -->
+
+<!--flask logic-->
+<script>
+    document.getElementById('submitButton').addEventListener('click', async function (event) {
+        event.preventDefault(); // Prevent form from reloading the page
+
+        const input = document.getElementById('userInput').value.trim();
+        const resultContainer = document.getElementById('resultContainer');
+
+        // Clear previous results
+        resultContainer.innerHTML = '';
+
+        if (!input) {
+            renderResult('', 'Please enter a comment.');
+            return;
+        }
+
+        try {
+            // Send input to Flask and get the sentiment result
+            const response = await fetch('/sentiment_result', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `comment=${encodeURIComponent(input)}`,
+            });
+
+            const data = await response.json();
+
+            // Render result based on the Flask response
+            const emoji = data.sentiment === 1 ? '😊' : '😢';
+            renderResult(emoji, data.message);
+        } catch (error) {
+            console.error('Error:', error);
+            renderResult('', 'Something went wrong. Please try again.');
+        }
+    });
+
+    function renderResult(emoji, message) {
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = emoji
+            ? `<div class='emoji'>${emoji}</div><div>${message}</div>`
+            : `<div>${message}</div>`;
+    }
+</script>
+
+
+
+
+
+</body>
+</html>
