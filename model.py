@@ -9,12 +9,12 @@ tfidf=pickle.load(open('tfidf.pkl','rb'))
 with open("stop.txt","r") as f1:
     stopwords_set=f1.read()
 
-emoji_pattern = re.compile('(?::|;|=)(?:-)?(?:\)|\(|D|P)')
+# emoji_pattern = re.compile('(?::|;|=)(?:-)?(?:\)|\(|D|P)')
 
 def preprocessing(text):
     text = re.sub('<[^>]*>', '', text)
-    emojis = emoji_pattern.findall(text)
-    text = re.sub('[\\W+]', ' ', text.lower()) + ' '.join(emojis).replace('-', '')
+    # emojis = emoji_pattern.findall(text)
+    text = re.sub('[\\W+]', ' ', text.lower()) + ' '.join(text).replace('-', '')
 
     prter = PorterStemmer()
     text = [prter.stem(word) for word in text.split() if word not in stopwords_set]
