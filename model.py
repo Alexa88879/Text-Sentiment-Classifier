@@ -1,8 +1,6 @@
 import pickle
 import re
-import nltk
 from nltk.stem.porter import PorterStemmer
-from nltk.corpus import stopwords
 clf=pickle.load(open('clf.pkl','rb'))
 tfidf=pickle.load(open('tfidf.pkl','rb'))
 
