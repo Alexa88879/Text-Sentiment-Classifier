@@ -93,10 +93,39 @@ Once running, open your browser and visit [http://127.0.0.1:5000](http://127.0.0
 - Deploy to Heroku, Vercel, or Render
 
 ---
+---
+### 👨‍💻 Contributors
+
+| Name        | GitHub Profile                          | Role/Contribution                        |
+|-------------|------------------------------------------|-------------------------------------------|
+| Archita Agrawal       | [@dragonkid2143](https://github.com/dragonkid2143) | Web Interface, Model Training & Testing |
+| Aryan Patel       | [@Alexa88879](https://github.com/Alexa88879) | Model Training & Testing, Documentation |
 
 ## 🤝 Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+### Steps to Contribute:
+
+1. **Fork the project**  
+   Click the "Fork" button on the top right of the repository to create a copy of the project under your GitHub account.
+
+2. **Create your feature branch**  
+   ```bash
+   git checkout -b feature/AmazingFeature
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+6. **Push to the branch**
+   ```bash
+   git push origin feature/AmazingFeature
+Open a Pull Request
+
+## 📧 Contact
+
+For any questions or feedback, please reach out through:
+
+- **GitHub Issues**: [Create an issue](https://github.com/Alexa88879/ESP8266-RFID-Telegram-Door-Lock/issues)
 
 ---
 
